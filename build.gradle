@@ -1,13 +1,14 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'maven'
 
 version = '1.0'
+group = 'junsom.code-factory'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 repositories {
 	maven { url "http://www.junsom.com:9001/nexus/content/groups/public/" }
-	mavenCentral()
 }
 
 ext {
@@ -21,3 +22,14 @@ dependencies {
 	compile 'mysql:mysql-connector-java:' + mysqlVersion
 }
 
+uploadArchives {
+  repositories {
+    ivy {
+      credentials {
+          username "admin"
+          password "admin123"
+      }
+      url "http://www.junsom.com:9001/nexus/content/repositories/thirdparty/"
+    }
+  }
+}
