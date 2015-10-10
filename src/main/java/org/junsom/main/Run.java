@@ -1,6 +1,6 @@
 package org.junsom.main;
 
-import org.junsom.factory.MapperFactory;
+import org.junsom.factory.CodeFactory;
 
 /**
  * 主函数
@@ -11,7 +11,7 @@ import org.junsom.factory.MapperFactory;
 public class Run {
 
     public static void main(String[] args) {
-        MapperFactory factory = new MapperFactory();
+        CodeFactory factory = new CodeFactory();
         factory.mapper();
     }
 

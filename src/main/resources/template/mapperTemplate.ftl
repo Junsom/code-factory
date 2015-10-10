@@ -29,94 +29,7 @@
 		 where ${keyColumn} = ${r"#{"}id${r"}"}
 		</#if>
 	</select>
-
-	<select id="getAll" resultMap="${resultMapId}">
-		<include refid="selectAllColumns" />
-	</select>
-	
-	<select id="get${entityName}ListByConditions" <#--parameterType="${entityPackage}.${entityName?uncap_first}"--> resultMap="${resultMapId}">
-		<include refid="selectAllColumns" />
-			where 1=1
-		<#list columns as column>				
-				<#if column.colJavaType=="java.lang.String">
-		<if test="params.${column.beanField} !=null and params.${column.beanField} !=''">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}  
-		</if> 
-				</#if>
-				<#if column.colJavaType=="java.lang.Integer">
-			<#if column.colComment?index_of('enum:') gte 0>
-		<if test="params.${column.beanField}Enum !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}Enum${r"}"}
-			<#else>
-		<if test="params.${column.beanField} !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}
-			</#if>  
-		</if>					
-				</#if>
-				<#if column.colJavaType=="java.math.BigDecimal">
-		<if test="params.${column.beanField} !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}  
-		</if>				
-				</#if>
-				<#if column.colJavaType=="java.util.Date">
-		<if test="params.${column.beanField} !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}  
-		</if>				
-				</#if>
-				<#if column.colJavaType=="java.lang.Long">
-		<if test="params.${column.beanField} !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}  
-		</if>				
-				</#if>	
-				<#if column.colJavaType=="java.lang.Boolean">
-		<if test="params.${column.beanField} !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}  
-		</if>				
-				</#if>																						
-		</#list>
-			<![CDATA[	limit ${r"#{"}pager.startIndex${r"}"},${r"#{"}pager.pageSize${r"}"}]]> 
-	</select>	
-	<select id="get${entityName}CountsByConditions"  resultType="Long">
-		<![CDATA[	select count(*) from ${tableName} ]]> 
-			where 1=1
-		<#list columns as column>				
-				<#if column.colJavaType=="java.lang.String">
-		<if test="params.${column.beanField} !=null and params.${column.beanField} !=''">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}  
-		</if> 
-				</#if>
-				<#if column.colJavaType=="java.lang.Integer">
-			<#if column.colComment?index_of('enum:') gte 0>
-		<if test="params.${column.beanField}Enum !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}Enum${r"}"}
-			<#else>
-		<if test="params.${column.beanField} !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}
-			</#if>  
-		</if>					
-				</#if>
-				<#if column.colJavaType=="java.math.BigDecimal">
-		<if test="params.${column.beanField} !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}  
-		</if>				
-				</#if>
-				<#if column.colJavaType=="java.util.Date">
-		<if test="params.${column.beanField} !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}  
-		</if>				
-				</#if>
-				<#if column.colJavaType=="java.lang.Long">
-		<if test="params.${column.beanField} !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}  
-		</if>				
-				</#if>	
-				<#if column.colJavaType=="java.lang.Boolean">
-		<if test="params.${column.beanField} !=null">
-			and ${column.dbColumn} = ${r"#{"}params.${column.beanField}${r"}"}  
-		</if>				
-				</#if>																						
-		</#list>
-	</select>			
+			
 	<#if keyColumn??>
 	<update id="update" parameterType="${entityPackage}.${entityName}">
 		<![CDATA[
@@ -125,18 +38,6 @@
 		where ${keyColumn} = <@mapperEl beanKeyField/>
 		]]>
 	</update>
-	
-	<#--
-	<update id="updateNotNull" parameterType="${entityPackage}.${entityName?uncap_first}">
-        update ${tableName} 
-    	<set>
-    		<#list columns as column>
-				<if test="${column.beanField} != null">${column.dbColumn}= <@mapperEl column.beanField/><#if column_index != (columns?size - 1)>,</#if></if>
-			</#list>
-	    </set>
-        where ${keyColumn} = <@mapperEl beanKeyField/>
-	</update>
-	-->
 	
 	<insert id="insert" parameterType="${entityPackage}.${entityName}" useGeneratedKeys="true" keyProperty="${beanKeyField}" keyColumn="${keyColumn}">
 	<![CDATA[
@@ -152,18 +53,4 @@
         delete from ${tableName} where ${keyColumn!} = <@mapperEl beanKeyField/>
     ]]>
     </delete> 
-	<#-- 
-	<select id="list" parameterType="${entityPackage}.${entityName?uncap_first}" resultMap="${resultMapId}">
-		select
-		<#list columns as column>
-			${column.dbColumn}<#if column_index != (columns?size - 1)>,</#if>
-		</#list>
-		from ${tableName}
-		<where>
-			<#list columns as column>
-				<if test="${column.beanField} != null">and ${column.dbColumn}= <@mapperEl column.beanField/></if>
-			</#list>
-		</where>
-	</select>
-	-->
 </mapper>

@@ -1,50 +1,83 @@
-package ${servicePackage};
+package ${servicePackage}.impl;
 
-import ${entityPackage}.${voName};
-import cn.com.dhc.ec.fw.common.page.Pagination;
 import java.util.List;
+import javax.annotation.Resource;
 
-public interface ${serviceName} {
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
 
-	/**
-     * 根据id取得<#if tableComment?? && tableComment?length &gt; 0>${tableComment}<#else>${entityName?uncap_first}对象</#if>
-     * @param  id
-     * @return
-     */
-     public ${voName} get${voName}ById(Long id);
+import ${daoPackage}.${daoName};
+import ${servicePackage}.${serviceName}; 
+import ${entityPackage}.${entityName};
+import cn.com.dhc.ec.fw.common.page.Pagination;
 
-	/**
-     * 根据id取得<#if tableComment?? && tableComment?length &gt; 0>${tableComment}<#else>${entityName?uncap_first}对象</#if>
-     * @param  id
-     * @return
-     */
-     public List<${voName}> getAll();
-
-	/**
-     * 根据${voName}对象分页查询
-     * @param  ${voName?uncap_first}
-     * @return
-     */
-     public Pagination<Map<String, Object>> get${voName}ListByConditions(Pagination<Map<String, Object>> pager);
+@Service
+public class ${serviceName} implements I${serviceName} {
+	
+	@Resource
+	private ${daoName} ${daoName?uncap_first};
     
-    /**
-     * 保存<#if tableComment?? && tableComment?length &gt; 0>${tableComment}<#else>${entityName?uncap_first}对象</#if>
-     * @param  ${voName?uncap_first}
-     * @return
-     */
-     public Long add${voName}(${voName} ${voName?uncap_first});
+    @Override
+    public ${entityName} get${entityName}ById(Long id) {
+    	return this.entity2vo(${daoName?uncap_first}.get(id));
+    }
+
+    @Override
+    public List<${entityName}> getAll(){
+    	List<${entityName}> ${entityName?uncap_first}List = ${daoName?uncap_first}.getAll();
+    	List<${entityName}> ${entityName?uncap_first}List = new ArrayList<${entityName}>();
+    	for(${entityName} entity : ${entityName?uncap_first}List){
+    		${entityName?uncap_first}List.add(this.entity2vo(entity));
+    	}
+		return ${entityName?uncap_first}List;
+    }
+
+    @Override
+    public Pagination<Map<String, Object>> get${entityName}ListByConditions(Pagination<Map<String, Object>> pager) {
+		List<${entityName}> ${entityName?uncap_first}List = ${daoName?uncap_first}.get${entityName}ListByConditions(pager, pager.getCondition());
+		Long totalList = ${daoName?uncap_first}.get${entityName}CountsByConditions(pager.getCondition());
+    	List<${entityName}> ${entityName?uncap_first}List = new ArrayList<${entityName}>();
+    	for(${entityName} entity : ${entityName?uncap_first}List){
+    		${entityName?uncap_first}List.add(this.entity2vo(entity));
+    	}
+    	pager.setData(${entityName?uncap_first}List);
+    	pager.setRecordsTotal(totalList.intValue());
+		return pager;
+    }
+            
+     @Override
+     public Long add${entityName}(${entityName} ${entityName?uncap_first}) {
+     	
+		return ${daoName?uncap_first}.insert(this.vo2entity(${entityName?uncap_first}));
+     }
      
-     /**
-     * 更新<#if tableComment?? && tableComment?length &gt; 0>${tableComment}<#else>${entityName?uncap_first}对象</#if>
-     * @param  ${voName?uncap_first}
-     * @return
-     */
-     public Integer update${voName}(${voName} ${voName?uncap_first});
+     @Override
+     public Integer update${entityName}(${entityName} ${entityName?uncap_first}) {
+		return ${daoName?uncap_first}.update(this.vo2entity(${entityName?uncap_first}));
+     }
      
-     /**
-     * 根据id删除<#if tableComment?? && tableComment?length &gt; 0>${tableComment}<#else>${entityName?uncap_first}对象</#if>
-     * @param  id
-     * @return
-     */
-     public Integer  delete${voName}(Long id);
+     @Override
+     public Integer delete${entityName}(Long id) {
+		return ${daoName?uncap_first}.delete(id);
+     }
+     
+     private ${entityName} entity2vo(${entityName} ${entityName?uncap_first}){
+     	//TODO 此处需要将entity转换成VO
+     	if(${entityName?uncap_first} == null){
+     		return null;
+     	}
+     	${entityName} ${entityName?uncap_first} = new ${entityName}();
+     	BeanUtils.copyProperties(${entityName?uncap_first}, ${entityName?uncap_first});
+     	return ${entityName?uncap_first};
+     }
+     
+     private ${entityName} vo2entity(${entityName} ${entityName?uncap_first}){
+     	//TODO 此处需要将VO转换成entity
+     	if(${entityName?uncap_first} == null){
+     		return null;
+     	}
+     	${entityName} ${entityName?uncap_first} = new ${entityName}();
+     	BeanUtils.copyProperties(${entityName?uncap_first}, ${entityName?uncap_first});
+     	return ${entityName?uncap_first};
+     }
 }

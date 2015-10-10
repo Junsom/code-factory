@@ -25,20 +25,6 @@ public interface ${daoName} {
      * @return
      */
 	List<${entityName}> getAll();
-
-	/**
-     * 根据Map<String,Object>对象查询符合条件的总数据数
-     * @param  Map对象
-     * @return
-     */
-	Long get${entityName}CountsByConditions(@Param("params") Map<String, Object> params);
-	
-	/**
-     * 根据Map<String,Object>分页查询
-     * @param  Map对象
-     * @return
-     */
-	List<${entityName}> get${entityName}ListByConditions(@Param("pager") Pagination<Map<String, Object>> pager, @Param("params") Map<String, Object> params);
 		
 	/**
      * 保存<#if tableComment?? && tableComment?length &gt; 0>${tableComment}<#else>${entityName?uncap_first}对象</#if>
