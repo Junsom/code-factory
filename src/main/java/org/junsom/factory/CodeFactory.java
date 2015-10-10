@@ -179,21 +179,8 @@ public class CodeFactory {
       this.createMapperFile(table);
       this.createEntityFile(table);
       this.createDaoFile(table);
+      this.createIServiceFile(table);
       this.createServiceFile(table);
-      this.createServiceImplFile(table);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
-  private void createServiceImplFile(Table table) {
-    try {
-      String templateFileName = "serviceImplTemplate.ftl";
-      Template template = this.getTemplateCfg().getTemplate(templateFileName);
-      File xmlFile = new File(folder + table.getServiceName() + "Impl.java");
-      Writer out = new OutputStreamWriter(new FileOutputStream(xmlFile), "UTF8");
-      template.process(table, out);
-      out.flush();
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -204,6 +191,19 @@ public class CodeFactory {
       String templateFileName = "serviceTemplate.ftl";
       Template template = this.getTemplateCfg().getTemplate(templateFileName);
       File xmlFile = new File(folder + table.getServiceName() + ".java");
+      Writer out = new OutputStreamWriter(new FileOutputStream(xmlFile), "UTF8");
+      template.process(table, out);
+      out.flush();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void createIServiceFile(Table table) {
+    try {
+      String templateFileName = "iServiceTemplate.ftl";
+      Template template = this.getTemplateCfg().getTemplate(templateFileName);
+      File xmlFile = new File(folder + "I" + table.getServiceName() + ".java");
       Writer out = new OutputStreamWriter(new FileOutputStream(xmlFile), "UTF8");
       template.process(table, out);
       out.flush();
