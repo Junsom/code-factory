@@ -9,6 +9,7 @@ targetCompatibility = 1.7
 
 repositories {
 	maven { url "http://www.junsom.com:9001/nexus/content/groups/public/" }
+	jcenter()
 }
 
 ext {
