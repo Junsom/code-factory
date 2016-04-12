@@ -1,7 +1,5 @@
 package ${entityPackage};
 
-import java.io.Serializable;
-import ${entityPackage}.BaseEntity;
  	<#list columns as column>
  		<#if column.colComment?? && column.colComment?length gt 0>
  			<#if column.colComment?index_of('enum:') gte 0>
@@ -22,41 +20,48 @@ import ${entityPackage}.${column.beanField?cap_first}Enum;
  * </table>
  *
  */
-public class ${entityName} extends BaseEntity implements Serializable {
- 
+public class ${entityName} {
  	
 	<#list columns as column>
- 			<#if column.colComment?? && column.colComment?index_of('enum:') gte 0>
- 		private ${column.beanField?cap_first}Enum ${column.beanField?uncap_first}Enum;
- 		/**
-	     * 获取<#if column.colComment?? && column.colComment?length gt 0>${column.colComment!}<#else>${column.beanField}</#if>
-	     */
- 		public ${column.beanField?cap_first}Enum get${column.beanField?cap_first}Enum(){
- 			return this.${column.beanField?uncap_first}Enum;
- 		}
+ 		<#if column.colComment?? && column.colComment?index_of('enum:') gte 0>
+ 			private ${column.beanField?cap_first}Enum ${column.beanField?uncap_first}Enum;
+		
+ 		<#else>
+ 			private ${column.colJavaType} ${column.beanField};
+			
+ 		</#if>
  		
- 		/**
-	     * 设置<#if column.colComment?? && column.colComment?length gt 0>${column.colComment!}<#else>${column.beanField}</#if>
-	     */
- 		public void set${column.beanField?cap_first}Enum(${column.beanField?cap_first}Enum ${column.beanField?uncap_first}Enum){
- 			this.${column.beanField?uncap_first}Enum = ${column.beanField?uncap_first}Enum;
- 		} 		
- 			<#else>
- 		private ${column.colJavaType} ${column.beanField};
- 		/**
-	     * 获取<#if column.colComment?? && column.colComment?length gt 0>${column.colComment!}<#else>${column.beanField}</#if>
-	     */
- 		public ${column.colJavaType} get${column.beanField?cap_first}(){
- 			return this.${column.beanField};
- 		}
- 		
- 		/**
-	     * 设置<#if column.colComment?? && column.colComment?length gt 0>${column.colComment!}<#else>${column.beanField}</#if>
-	     */
- 		public void set${column.beanField?cap_first}(${column.colJavaType} ${column.beanField}){
- 			this.${column.beanField} = ${column.beanField};
- 		} 				
- 			</#if>
- 		
+ 	</#list>
+ 	
+ 	<#list columns as column>
+ 		<#if column.colComment?? && column.colComment?index_of('enum:') gte 0>
+	 		/**
+		     * 获取<#if column.colComment?? && column.colComment?length gt 0>${column.colComment!}<#else>${column.beanField}</#if>
+		     */
+	 		public ${column.beanField?cap_first}Enum get${column.beanField?cap_first}Enum(){
+	 			return this.${column.beanField?uncap_first}Enum;
+	 		}
+	 		
+	 		/**
+		     * 设置<#if column.colComment?? && column.colComment?length gt 0>${column.colComment!}<#else>${column.beanField}</#if>
+		     */
+	 		public void set${column.beanField?cap_first}Enum(${column.beanField?cap_first}Enum ${column.beanField?uncap_first}Enum){
+	 			this.${column.beanField?uncap_first}Enum = ${column.beanField?uncap_first}Enum;
+	 		} 		
+ 		<#else>
+	 		/**
+		     * 获取<#if column.colComment?? && column.colComment?length gt 0>${column.colComment!}<#else>${column.beanField}</#if>
+		     */
+	 		public ${column.colJavaType} get${column.beanField?cap_first}(){
+	 			return this.${column.beanField};
+	 		}
+	 		
+	 		/**
+		     * 设置<#if column.colComment?? && column.colComment?length gt 0>${column.colComment!}<#else>${column.beanField}</#if>
+		     */
+	 		public void set${column.beanField?cap_first}(${column.colJavaType} ${column.beanField}){
+	 			this.${column.beanField} = ${column.beanField};
+	 		} 				
+ 		</#if>
  	</#list>
  }

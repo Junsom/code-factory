@@ -19,13 +19,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
+
 import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 
 public class CodeFactory {
-
+  
   private static Map<String, String> javaSqlTypeTransferMap;
   private static Properties          prop;
   private static String              folder;
@@ -67,7 +69,7 @@ public class CodeFactory {
     String user = prop.getProperty("user");
     String pass = prop.getProperty("pass");
     String basePackage = prop.getProperty("package.base");
-    String entityPackage = basePackage + ".entity";
+    String entityPackage = basePackage + ".model";
     String enumPackage = basePackage + ".em";
     String daoPackage = basePackage + ".dao";
     String apiPackage = basePackage + ".api";
@@ -143,7 +145,7 @@ public class CodeFactory {
       ResultSet rs =
           st
             .executeQuery("SELECT DISTINCT c.column_name, c.DATA_TYPE, c.column_comment,c.IS_NULLABLE,c.CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS c WHERE c.table_name = '"
-                + tableName + "'");
+                + tableName + "' and TABLE_SCHEMA='"+ db +"'");
       System.out.println("========================" + tableName
           + "===============================");
       List<Column> columns = new ArrayList<Column>();
@@ -399,13 +401,13 @@ public class CodeFactory {
   private String getBeanNameFromTalbeName(String tableName) {
     String[] pieces = tableName.split("_");
     if (pieces.length <= 1) {
-      return tableName;
+      return StringUtils.capitalize(tableName);
     }
     StringBuffer sb = new StringBuffer();
     for (int i = 1; i < pieces.length - 1; i++) {
       sb.append(String.valueOf(pieces[i].charAt(0)).toUpperCase()).append(
           pieces[i].substring(1));
     }
-    return sb.toString();
+    return StringUtils.capitalize(sb.toString());
   }
 }

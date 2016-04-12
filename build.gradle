@@ -3,12 +3,12 @@ apply plugin: 'eclipse'
 apply plugin: 'maven'
 
 version = '1.0'
-group = 'junsom.code-factory'
+group = 'junsom'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 repositories {
-	maven { url "http://www.junsom.com:9001/nexus/content/groups/public/" }
+	maven { url "http://service.junsom.com/nexus/content/groups/public/" }
 	jcenter()
 }
 
@@ -17,10 +17,17 @@ ext {
 	mysqlVersion = '5.1.30'
 }
 
+tasks.withType(JavaCompile) {
+   options.encoding = "UTF-8"
+}
+
 dependencies {
 	testCompile group: 'junit', name: 'junit', version: '4.+'
 	compile 'org.freemarker:freemarker:' + freemarkerVersion
 	compile 'mysql:mysql-connector-java:' + mysqlVersion
+	compile 'org.mybatis:mybatis:3.3.0'
+	compile 'com.junsom:common:0.0.1-SNAPSHOT'
+	compile 'commons-lang:commons-lang:2.6'
 }
 
 uploadArchives {
@@ -30,7 +37,7 @@ uploadArchives {
           username "admin"
           password "admin123"
       }
-      url "http://www.junsom.com:9001/nexus/content/repositories/thirdparty/"
+      //url "http://www.junsom.com:9001/nexus/content/repositories/thirdparty/"
     }
   }
 }
